@@ -34,6 +34,20 @@ import paceSiswaStatus from '../controllers/pace/siswa/status.js';
 
 import uploadFile from '../controllers/upload/index.js';
 
+/**
+ * Express 5 makes req.query a getter — you can't do req.query.x = y.
+ * This helper safely merges additional params into req.query.
+ */
+function mergeQuery(req, extras) {
+    const current = req.query || {};
+    Object.defineProperty(req, 'query', {
+        value: { ...current, ...extras },
+        writable: true,
+        configurable: true,
+        enumerable: true,
+    });
+}
+
 export default async function handler(req, res) {
     try {
         const url = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
@@ -66,7 +80,7 @@ export default async function handler(req, res) {
         // Dynamic Route: /api/pendaftaran/[id]/status
         const pendaftaranStatusMatch = path.match(/^\/api\/pendaftaran\/([^\/]+)\/status$/);
         if (pendaftaranStatusMatch) {
-            req.query.id = pendaftaranStatusMatch[1];
+            mergeQuery(req, { id: pendaftaranStatusMatch[1] });
             return pendaftaranStatus(req, res);
         }
 
@@ -81,27 +95,27 @@ export default async function handler(req, res) {
         // Dynamic Route: /api/admin/pendaftaran/[id]/status
         const adminPendaftaranStatusMatch = path.match(/^\/api\/admin\/pendaftaran\/([^\/]+)\/status$/);
         if (adminPendaftaranStatusMatch) {
-            req.query.id = adminPendaftaranStatusMatch[1];
+            mergeQuery(req, { id: adminPendaftaranStatusMatch[1] });
             return adminPendaftaranStatus(req, res);
         }
 
         // Dynamic Route: /api/admin/pendaftaran/[id]/poin (penetapan poin per berkas/NIM/NIK)
         const adminPendaftaranPoinMatch = path.match(/^\/api\/admin\/pendaftaran\/([^\/]+)\/poin$/);
         if (adminPendaftaranPoinMatch) {
-            req.query.id = adminPendaftaranPoinMatch[1];
+            mergeQuery(req, { id: adminPendaftaranPoinMatch[1] });
             return adminPendaftaranPoin(req, res);
         }
 
         // VALIDATE NIK/NIM (Dynamic Routes)
         const validateNimMatch = path.match(/^\/api\/validate\/nim\/([^\/]+)$/);
         if (validateNimMatch) {
-            req.query.nim = validateNimMatch[1];
+            mergeQuery(req, { nim: validateNimMatch[1] });
             return validateNim(req, res);
         }
 
         const validateNikMatch = path.match(/^\/api\/validate\/nik\/([^\/]+)$/);
         if (validateNikMatch) {
-            req.query.nik = validateNikMatch[1];
+            mergeQuery(req, { nik: validateNikMatch[1] });
             return validateNik(req, res);
         }
 
@@ -112,21 +126,21 @@ export default async function handler(req, res) {
         // Dynamic: /api/pace/sekolah/:id/status
         const paceSekolahStatusMatch = path.match(/^\/api\/pace\/sekolah\/(\d+)\/status$/);
         if (paceSekolahStatusMatch) {
-            req.query.id = paceSekolahStatusMatch[1];
+            mergeQuery(req, { id: paceSekolahStatusMatch[1] });
             return paceSekolahStatus(req, res);
         }
 
         // Dynamic: /api/pace/siswa/:id/status
         const paceSiswaStatusMatch = path.match(/^\/api\/pace\/siswa\/(\d+)\/status$/);
         if (paceSiswaStatusMatch) {
-            req.query.id = paceSiswaStatusMatch[1];
+            mergeQuery(req, { id: paceSiswaStatusMatch[1] });
             return paceSiswaStatus(req, res);
         }
 
         // Dynamic: /api/pace/siswa/:id (for PUT/DELETE)
         const paceSiswaIdMatch = path.match(/^\/api\/pace\/siswa\/(\d+)$/);
         if (paceSiswaIdMatch) {
-            req.query.id = paceSiswaIdMatch[1];
+            mergeQuery(req, { id: paceSiswaIdMatch[1] });
             return paceSiswaId(req, res);
         }
 
@@ -138,7 +152,7 @@ export default async function handler(req, res) {
         if (path === '/api/superadmin/surat-permohonan') return (await import('../controllers/superadmin/surat-permohonan.js')).default(req, res);
         const superAdminSuratMatch = path.match(/^\/api\/superadmin\/surat-permohonan\/(\d+)$/);
         if (superAdminSuratMatch) {
-            req.query.id = superAdminSuratMatch[1];
+            mergeQuery(req, { id: superAdminSuratMatch[1] });
             return (await import('../controllers/superadmin/surat-permohonan.js')).default(req, res);
         }
 
