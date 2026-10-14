@@ -125,7 +125,7 @@ CREATE TABLE `pendaftaran` (
 CREATE TABLE `dokumen_pendaftaran` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `pendaftaran_id` INT NOT NULL,
-    `jenis_dokumen` ENUM('surat_permohonan','rab','kartu_mahasiswa','ktp','sk_aktif','khs','kartu_keluarga','pasfoto','rekening','khs_terakhir','sktm','surat_rekomendasi_rektor','surat_rekomendasi_pimpinan','rekomendasi','pernyataan','prestasi_akademik','prestasi_non_akademik') NOT NULL,
+    `jenis_dokumen` VARCHAR(100) NOT NULL,
     `file_path` VARCHAR(255) NOT NULL,
     `poin` INT NULL,
     `uploaded_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,

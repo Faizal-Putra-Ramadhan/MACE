@@ -31,8 +31,8 @@ async function handler(req, res) {
         if (!VALID_PROGRAMS.includes(program)) {
             return res.status(400).json({ message: 'Program tidak valid' });
         }
-        if (!data_diri || !data_diri.nama || !data_diri.nim || !data_diri.nik) {
-            return res.status(400).json({ message: 'Data diri (nama, NIM, NIK) wajib diisi' });
+        if (!data_diri || !data_diri.nama || !data_diri.nik) {
+            return res.status(400).json({ message: 'Data diri (nama, NIK) wajib diisi' });
         }
 
         // Pendaftaran anonim: mahasiswa_id null. Jika pembuatnya operator login, catat operator_id.

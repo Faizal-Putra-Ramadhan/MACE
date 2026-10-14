@@ -10,27 +10,10 @@ const DokumenPendaftaran = sequelize.define('dokumen_pendaftaran', {
         allowNull: false
     },
     jenis_dokumen: {
-        type: DataTypes.ENUM({
-            values: [
-                'surat_permohonan', 
-                'rab', 
-                'kartu_mahasiswa', 
-                'ktp', 
-                'sk_aktif', 
-                'khs', 
-                'kartu_keluarga', 
-                'pasfoto', 
-                'rekening',
-                'khs_terakhir',
-                'sktm',
-                'surat_rekomendasi_rektor',
-                'surat_rekomendasi_pimpinan',
-                'rekomendasi',
-                'pernyataan',
-                'prestasi_akademik',
-                'prestasi_non_akademik'
-            ]
-        }),
+        // Dulu ENUM dengan daftar nilai tetap. Kini VARCHAR bebas supaya
+        // dokumen pendaftaran bisa ditambah tanpa migrasi ENUM tiap kali.
+        // (Jalankan scripts/alter_dokumen_jenis.js sekali untuk mengubah kolom DB.)
+        type: DataTypes.STRING(100),
         allowNull: false
     },
     file_path: {

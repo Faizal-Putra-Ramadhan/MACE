@@ -1,19 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Check, X, GraduationCap, Loader2, Eye, ExternalLink, XCircle, Save, Trophy } from 'lucide-react';
 import api from '../../../api/axios';
-import { getPendaftarNama, getPendaftarNim, getPendaftarNik, getPendaftarPt, getPendaftarProdi, getPendaftarSemester, getPendaftarStase, getPendaftarOrangTua, getPendaftarAlamat } from '../../../lib/pendaftaran';
+import { getPendaftarNama, getPendaftarNim, getPendaftarNik, getPendaftarPt, getPendaftarSemester } from '../../../lib/pendaftaran';
 import { hitungPoinFinal } from '../../../../lib/points.js';
+import { DOKUMEN_LIST, DOKUMEN_D_LIST, SURAT_LIST, ALL_FIELD_LABELS } from '../../../lib/pendaftaranConfig';
 
 const DOKUMEN_LABELS = {
+  // Label lama (masih dipakai data pendaftaran sebelumnya).
   surat_permohonan: 'Surat Permohonan',
   rab: 'Rencana Anggaran Biaya',
-  kartu_mahasiswa: 'Kartu Mahasiswa',
-  ktp: 'KTP',
-  sk_aktif: 'SK Aktif Kuliah',
-  khs: 'KHS',
   khs_terakhir: 'KHS Terakhir',
-  kartu_keluarga: 'Kartu Keluarga',
-  pasfoto: 'Pas Foto',
   rekening: 'Buku Rekening',
   sktm: 'SKTM',
   surat_rekomendasi_rektor: 'Surat Rekomendasi Rektor',
@@ -22,6 +18,10 @@ const DOKUMEN_LABELS = {
   pernyataan: 'Surat Pernyataan',
   prestasi_akademik: 'Sertifikat Prestasi Akademik',
   prestasi_non_akademik: 'Sertifikat Prestasi Non-Akademik',
+  // Label baru: dibangun dari konfigurasi dokumen & surat pendaftaran.
+  ...Object.fromEntries(DOKUMEN_LIST.map(d => [d.name, d.label])),
+  ...Object.fromEntries(DOKUMEN_D_LIST.map(d => [d.name, d.label])),
+  ...Object.fromEntries(SURAT_LIST.map(s => [s.name, s.title])),
 };
 
 const AdminMaceApproval = () => {
@@ -322,27 +322,40 @@ const AdminMaceApproval = () => {
 
               {/* Identity */}
               <div>
-                <h4 className="text-sm font-bold text-brand-blue uppercase tracking-wider mb-4">Identitas Mahasiswa</h4>
-                <div className="grid md:grid-cols-2 gap-x-8 gap-y-3">
-                  {[
-                    ['Nama Lengkap', getPendaftarNama(selectedDetail)],
-                    ['NIM', getPendaftarNim(selectedDetail)],
-                    ['NIK', getPendaftarNik(selectedDetail)],
-                    ['NIP', selectedDetail.mahasiswa?.nip],
-                    ['Perguruan Tinggi', getPendaftarPt(selectedDetail)],
-                    ['Program Studi', getPendaftarProdi(selectedDetail)],
-                    ['Semester', getPendaftarSemester(selectedDetail)],
-                    ['Stase', getPendaftarStase(selectedDetail)],
-                    ['Nama Orang Tua', getPendaftarOrangTua(selectedDetail)],
-                    ['Alamat', getPendaftarAlamat(selectedDetail)],
-                    ['Alamat KTP', selectedDetail.mahasiswa?.alamat_ktp],
-                  ].map(([label, value]) => (
-                    <div key={label}>
-                      <p className="text-xs font-bold text-slate-400">{label}</p>
-                      <p className="text-sm font-medium text-slate-900">{value || '-'}</p>
+                <h4 className="text-sm font-bold text-brand-blue uppercase tracking-wider mb-4">Identitas & Data Pendaftaran</h4>
+                {(() => {
+                  const dd = selectedDetail.data_diri || {};
+                  // Label tambahan untuk field lama yang tidak ada di konfigurasi baru.
+                  const legacyLabels = {
+                    pt: 'Perguruan Tinggi', jurusan: 'Program Studi', alamat: 'Alamat',
+                    no_hp: 'No. HP', ttl: 'Tempat, Tanggal Lahir', jalur: 'Jalur',
+                    wilayah_name: 'Wilayah', wilayah: 'Kode Wilayah',
+                  };
+                  const labels = { ...legacyLabels, ...ALL_FIELD_LABELS };
+                  const skip = new Set(['nim_terdaftar', 'nik_terdaftar', 'ktp_papua', 'is_oap']);
+                  const entries = Object.entries(dd).filter(([k, v]) =>
+                    !skip.has(k) && v !== '' && v !== null && v !== undefined
+                  );
+                  if (!entries.length) {
+                    return (
+                      <div className="grid md:grid-cols-2 gap-x-8 gap-y-3">
+                        {[['Nama Lengkap', getPendaftarNama(selectedDetail)], ['NIM', getPendaftarNim(selectedDetail)], ['NIK', getPendaftarNik(selectedDetail)]].map(([label, value]) => (
+                          <div key={label}><p className="text-xs font-bold text-slate-400">{label}</p><p className="text-sm font-medium text-slate-900">{value || '-'}</p></div>
+                        ))}
+                      </div>
+                    );
+                  }
+                  return (
+                    <div className="grid md:grid-cols-2 gap-x-8 gap-y-3">
+                      {entries.map(([key, value]) => (
+                        <div key={key} className={(String(value).length > 60 ? 'md:col-span-2 ' : '')}>
+                          <p className="text-xs font-bold text-slate-400">{labels[key] || key}</p>
+                          <p className="text-sm font-medium text-slate-900 whitespace-pre-line">{String(value)}</p>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
+                  );
+                })()}
               </div>
 
               {/* Registration Info */}

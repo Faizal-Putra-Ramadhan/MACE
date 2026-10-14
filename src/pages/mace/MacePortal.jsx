@@ -77,7 +77,7 @@ const MacePortal = () => {
                   {KABUPATEN_LIST.map(kab => (
                     <button
                       key={kab.id}
-                      onClick={() => navigate('/mace/daftar')}
+                      onClick={() => navigate('/mace/daftar', { state: { jalur: 'kabupaten_kota', wilayah: kab.id, wilayahName: kab.name } })}
                       className="group w-full text-left p-4 rounded-xl border border-slate-200 hover:border-brand-blue/40 hover:bg-white transition-all flex items-center justify-between shadow-sm hover:shadow-md bg-white"
                     >
                       <div className="flex items-center gap-3">
@@ -113,7 +113,7 @@ const MacePortal = () => {
                     <li className="flex items-start gap-2"><ChevronRight size={14} className="text-brand-gold mt-0.5 shrink-0" /> Beasiswa Program Spesialis bagi Dokter</li>
                     <li className="flex items-start gap-2"><ChevronRight size={14} className="text-brand-gold mt-0.5 shrink-0" /> Beasiswa Program Split Site Magister Amerika</li>
                   </ul>
-                  <button onClick={() => navigate('/mace/daftar')} className="w-full py-2 bg-brand-gold text-white font-bold rounded-xl hover:bg-amber-500 transition-colors">Daftar Beasiswa</button>
+                  <button onClick={() => navigate('/mace/daftar', { state: { jalur: 'provinsi' } })} className="w-full py-2 bg-brand-gold text-white font-bold rounded-xl hover:bg-amber-500 transition-colors">Daftar Beasiswa</button>
                 </div>
 
                 <div className="bg-white rounded-2xl p-6 border-2 border-slate-200 hover:border-brand-blue/60 transition-all shadow-sm">
@@ -130,7 +130,7 @@ const MacePortal = () => {
                     <li className="flex items-start gap-2"><ChevronRight size={14} className="text-brand-blue mt-0.5 shrink-0" /> Bantuan Pembiayaan Pendidikan Profesi Kedokteran (KOAS)</li>
                     <li className="flex items-start gap-2"><ChevronRight size={14} className="text-brand-blue mt-0.5 shrink-0" /> Bantuan Pembiayaan Pendidikan Profesi Guru (PPG)</li>
                   </ul>
-                  <button onClick={() => navigate('/mace/daftar')} className="w-full py-2 bg-brand-blue text-white font-bold rounded-xl hover:bg-blue-700 transition-colors">Daftar Bantuan</button>
+                  <button onClick={() => navigate('/mace/daftar', { state: { jalur: 'provinsi' } })} className="w-full py-2 bg-brand-blue text-white font-bold rounded-xl hover:bg-blue-700 transition-colors">Daftar Bantuan</button>
                 </div>
 
               </div>
