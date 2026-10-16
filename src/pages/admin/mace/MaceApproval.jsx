@@ -3,7 +3,7 @@ import { Search, Check, X, GraduationCap, Loader2, Eye, ExternalLink, XCircle, S
 import api from '../../../api/axios';
 import { getPendaftarNama, getPendaftarNim, getPendaftarNik, getPendaftarPt, getPendaftarSemester } from '../../../lib/pendaftaran';
 import { hitungPoinFinal } from '../../../../lib/points.js';
-import { DOKUMEN_LIST, DOKUMEN_D_LIST, SURAT_LIST, ALL_FIELD_LABELS } from '../../../lib/pendaftaranConfig';
+import { DOKUMEN_LIST, DOKUMEN_D_LIST, DOKUMEN_B_LIST, DOKUMEN_C_LIST, DOKUMEN_SP_LIST, DOKUMEN_F_LIST, SURAT_LIST, SURAT_B_LIST, SURAT_C_LIST, SURAT_SP_LIST, SURAT_F_LIST, ALL_FIELD_LABELS } from '../../../lib/pendaftaranConfig';
 
 const DOKUMEN_LABELS = {
   // Label lama (masih dipakai data pendaftaran sebelumnya).
@@ -21,7 +21,15 @@ const DOKUMEN_LABELS = {
   // Label baru: dibangun dari konfigurasi dokumen & surat pendaftaran.
   ...Object.fromEntries(DOKUMEN_LIST.map(d => [d.name, d.label])),
   ...Object.fromEntries(DOKUMEN_D_LIST.map(d => [d.name, d.label])),
+  ...Object.fromEntries(DOKUMEN_B_LIST.map(d => [d.name, d.label])),
+  ...Object.fromEntries(DOKUMEN_C_LIST.map(d => [d.name, d.label])),
+  ...Object.fromEntries(DOKUMEN_SP_LIST.map(d => [d.name, d.label])),
+  ...Object.fromEntries(DOKUMEN_F_LIST.map(d => [d.name, d.label])),
   ...Object.fromEntries(SURAT_LIST.map(s => [s.name, s.title])),
+  ...Object.fromEntries(SURAT_B_LIST.map(s => [s.name, s.title])),
+  ...Object.fromEntries(SURAT_C_LIST.map(s => [s.name, s.title])),
+  ...Object.fromEntries(SURAT_SP_LIST.map(s => [s.name, s.title])),
+  ...Object.fromEntries(SURAT_F_LIST.map(s => [s.name, s.title])),
 };
 
 const AdminMaceApproval = () => {

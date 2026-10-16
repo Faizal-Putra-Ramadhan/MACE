@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 import { withMiddleware } from '../../lib/auth.js';
 import { hitungPoinOtomatis } from '../../lib/points.js';
 
-const VALID_PROGRAMS = ['A', 'B', 'C', 'D', 'E'];
+const VALID_PROGRAMS = ['A', 'B', 'C', 'D', 'E', 'F'];
 
 // Coba ambil user dari token (untuk menandai operator). Tidak wajib.
 async function resolveOptionalUser(req) {

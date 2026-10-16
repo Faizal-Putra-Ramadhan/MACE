@@ -155,8 +155,11 @@ const PendaftaranForm = () => {
     setProgram(id);
     setProgramWarning('');
     const prodi = (dataDiri.program_studi || dataDiri.prodi_doktor || dataDiri.jurusan || '').toLowerCase();
-    if ((id === 'B' || id === 'C') && !prodi.includes('kedokteran') && !prodi.includes('dokter') && !prodi.includes('profesi')) {
+    if ((id === 'C' || id === 'D') && !prodi.includes('kedokteran') && !prodi.includes('dokter') && !prodi.includes('profesi')) {
       setProgramWarning('Catatan: program ini umumnya untuk jurusan Kedokteran. Anda tetap dapat melanjutkan, keputusan akhir ada pada verifikator.');
+    }
+    if (id === 'E') {
+      setProgramWarning('Catatan: program ini umumnya untuk jenjang S3/Doktoral. Anda tetap dapat melanjutkan.');
     }
   };
 

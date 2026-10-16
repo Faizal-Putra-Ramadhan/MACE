@@ -15,7 +15,7 @@ const Pendaftaran = sequelize.define('pendaftaran', {
     },
     program: {
         type: DataTypes.ENUM({
-            values: ['A', 'B', 'C', 'D', 'E']
+            values: ['A', 'B', 'C', 'D', 'E', 'F']
         }),
         allowNull: false
     },

@@ -98,7 +98,7 @@ CREATE TABLE `pendaftaran` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `mahasiswa_id` INT NULL,
     `operator_id` INT NULL,
-    `program` ENUM('A','B','C','D','E') NOT NULL,
+    `program` ENUM('A','B','C','D','E','F') NOT NULL,
     `status` ENUM('draft','submitted','lolos_berkas','ditolak','selesai') NOT NULL DEFAULT 'submitted',
     `alasan_penolakan` TEXT NULL,
     `kode_kartu` VARCHAR(255) NULL,
