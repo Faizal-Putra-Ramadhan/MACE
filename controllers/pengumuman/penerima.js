@@ -22,17 +22,24 @@ async function handler(req, res) {
             order: [['created_at', 'ASC']]
         });
 
-        // Satu kategori MACE (tanpa pemisahan Kab/Kota vs Provinsi) karena
-        // pendaftaran kini bersifat login-free dan identitas disimpan di data_diri.
-        const mace = maceList.map((p, i) => {
+        // Penerima MACE dipisah per program (A-F). Setiap program jadi kategori
+        // tersendiri di halaman pengumuman, selaras dengan approval per program.
+        const PROGRAMS = ['A', 'B', 'C', 'D', 'E', 'F'];
+        const maceByProgram = {};
+        PROGRAMS.forEach(k => { maceByProgram[`mace_${k}`] = []; });
+
+        maceList.forEach((p) => {
             const dd = p.data_diri || {};
-            return {
-                no: i + 1,
+            const prog = String(p.program || 'A').toUpperCase();
+            const key = `mace_${prog}`;
+            if (!maceByProgram[key]) maceByProgram[key] = [];
+            maceByProgram[key].push({
+                no: maceByProgram[key].length + 1,
                 nama: dd.nama || p.mahasiswa?.nama_lengkap || '-',
                 nim: dd.nim || p.mahasiswa?.nim || '-',
                 nik: dd.nik || p.mahasiswa?.nik || '-',
                 kampus: dd.pt || p.mahasiswa?.perguruan_tinggi || '-',
-            };
+            });
         });
 
         // === PACE Recipients ===
@@ -82,7 +89,7 @@ async function handler(req, res) {
         }
 
         res.status(200).json({
-            mace,
+            ...maceByProgram,
             pace_slb: paceSLB,
             pace_snk: paceSNK,
             pace_atlit: paceAtlit,

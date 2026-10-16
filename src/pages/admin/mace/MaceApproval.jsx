@@ -3,7 +3,7 @@ import { Search, Check, X, GraduationCap, Loader2, Eye, ExternalLink, XCircle, S
 import api from '../../../api/axios';
 import { getPendaftarNama, getPendaftarNim, getPendaftarNik, getPendaftarPt, getPendaftarSemester } from '../../../lib/pendaftaran';
 import { hitungPoinFinal } from '../../../../lib/points.js';
-import { DOKUMEN_LIST, DOKUMEN_D_LIST, DOKUMEN_B_LIST, DOKUMEN_C_LIST, DOKUMEN_SP_LIST, DOKUMEN_F_LIST, SURAT_LIST, SURAT_B_LIST, SURAT_C_LIST, SURAT_SP_LIST, SURAT_F_LIST, ALL_FIELD_LABELS } from '../../../lib/pendaftaranConfig';
+import { DOKUMEN_LIST, DOKUMEN_D_LIST, DOKUMEN_B_LIST, DOKUMEN_C_LIST, DOKUMEN_SP_LIST, DOKUMEN_F_LIST, SURAT_LIST, SURAT_B_LIST, SURAT_C_LIST, SURAT_SP_LIST, SURAT_F_LIST, ALL_FIELD_LABELS, PROGRAM_OPTIONS_PROVINSI } from '../../../lib/pendaftaranConfig';
 
 const DOKUMEN_LABELS = {
   // Label lama (masih dipakai data pendaftaran sebelumnya).
@@ -34,6 +34,8 @@ const DOKUMEN_LABELS = {
 
 const AdminMaceApproval = () => {
   const [search, setSearch] = useState('');
+  // Approval dipisah per program (A-F). Default: program pertama.
+  const [activeProgram, setActiveProgram] = useState(PROGRAM_OPTIONS_PROVINSI[0]?.id || 'A');
   const [pendaftaranList, setPendaftaranList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [nominalInputs, setNominalInputs] = useState({});
@@ -140,14 +142,23 @@ const AdminMaceApproval = () => {
     return <span className="bg-amber-100 text-amber-700 px-3 py-1 rounded-full text-xs font-bold">Menunggu</span>;
   };
 
-  // Perangkingan: urutkan dari poin total tertinggi ke terendah
+  // Perangkingan: urutkan dari poin total tertinggi ke terendah, dalam program aktif.
+  const normProgram = (p) => String(p.program || 'A').toUpperCase();
+  const currentProgramKey = String(activeProgram).toUpperCase();
   const filtered = pendaftaranList
+    .filter(p => normProgram(p) === currentProgramKey)
     .filter(p => {
       const nama = (p.data_diri?.nama || p.mahasiswa?.nama_lengkap || '').toLowerCase();
       const nim = p.data_diri?.nim || p.mahasiswa?.nim || '';
       return nama.includes(search.toLowerCase()) || nim.includes(search);
     })
     .sort((a, b) => (getPoin(b).poin_total - getPoin(a).poin_total) || (new Date(b.created_at) - new Date(a.created_at)));
+
+  // Jumlah pendaftar per program untuk badge tab.
+  const countByProgram = PROGRAM_OPTIONS_PROVINSI.reduce((acc, prog) => {
+    acc[prog.id] = pendaftaranList.filter(p => normProgram(p) === prog.id).length;
+    return acc;
+  }, {});
 
     const isValidUrl = (url) => !!url && (url.startsWith('http') || url.startsWith('/'));
 
@@ -158,7 +169,32 @@ const AdminMaceApproval = () => {
           <GraduationCap className="text-brand-blue" />
           MACE Approval Mahasiswa
         </h2>
-        <p className="text-slate-500 mt-1">Tinjau pendaftaran mahasiswa MACE. Daftar diurutkan berdasarkan perangkingan poin tertinggi. Poin dokumen ditetapkan oleh admin.</p>
+        <p className="text-slate-500 mt-1">Tinjau pendaftaran mahasiswa MACE per program. Daftar diurutkan berdasarkan perangkingan poin tertinggi dalam tiap program. Poin dokumen ditetapkan oleh admin.</p>
+      </div>
+
+      {/* Program Tabs */}
+      <div className="flex gap-2 flex-wrap">
+        {PROGRAM_OPTIONS_PROVINSI.map(prog => {
+          const isActive = normProgram({ program: activeProgram }) === prog.id;
+          const count = countByProgram[prog.id] || 0;
+          return (
+            <button
+              key={prog.id}
+              onClick={() => setActiveProgram(prog.id)}
+              title={prog.desc}
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold transition-all ${
+                isActive
+                  ? 'bg-brand-blue text-white premium-shadow'
+                  : 'bg-white text-slate-600 border border-slate-200 hover:border-slate-300'
+              }`}
+            >
+              {prog.title}
+              {count > 0 && (
+                <span className={`px-1.5 py-0.5 rounded text-xs font-bold ${isActive ? 'bg-white/20' : 'bg-slate-100'}`}>{count}</span>
+              )}
+            </button>
+          );
+        })}
       </div>
 
       <div className="relative max-w-md">
@@ -242,7 +278,7 @@ const AdminMaceApproval = () => {
                   );
                 })}
                 {filtered.length === 0 && (
-                  <tr><td colSpan="9" className="px-6 py-12 text-center text-slate-400">Belum ada data pendaftaran.</td></tr>
+                  <tr><td colSpan="9" className="px-6 py-12 text-center text-slate-400">Belum ada pendaftar pada program ini.</td></tr>
                 )}
               </tbody>
             </table>

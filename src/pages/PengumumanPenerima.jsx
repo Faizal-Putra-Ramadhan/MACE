@@ -2,9 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Megaphone, Download, GraduationCap, Award, School, Users, Loader2, ArrowLeft, FileText } from 'lucide-react';
 import api from '../api/axios';
+import { PROGRAM_OPTIONS_PROVINSI } from '../lib/pendaftaranConfig';
+
+// Kategori MACE dipisah per program (A-F), mengikuti approval per program.
+const MACE_CATEGORIES = PROGRAM_OPTIONS_PROVINSI.map(p => ({
+  id: `mace_${p.id}`,
+  label: `MACE ${p.id}`,
+  desc: p.title,
+  icon: GraduationCap,
+  color: 'blue',
+}));
 
 const CATEGORIES = [
-  { id: 'mace', label: 'MACE', desc: 'Bantuan Biaya Pendidikan MACE', icon: GraduationCap, color: 'blue' },
+  ...MACE_CATEGORIES,
   { id: 'pace_slb', label: 'PACE SLB', desc: 'Pelajar Cerdas - Sekolah Luar Biasa', icon: School, color: 'gold' },
   { id: 'pace_snk', label: 'PACE SNK', desc: 'Pelajar Cerdas - Sekolah Kekhususan', icon: School, color: 'gold' },
   { id: 'pace_atlit', label: 'PACE Atlit Berprestasi', desc: 'Pelajar Cerdas - Siswa Atlit Berprestasi', icon: Award, color: 'gold' },
@@ -12,7 +22,7 @@ const CATEGORIES = [
 
 const PengumumanPenerima = () => {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('mace');
+  const [activeTab, setActiveTab] = useState(MACE_CATEGORIES[0]?.id || 'mace_A');
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -32,10 +42,10 @@ const PengumumanPenerima = () => {
 
   const currentCategory = CATEGORIES.find(c => c.id === activeTab);
   const currentList = data ? data[activeTab] || [] : [];
-  const skUrl = activeTab === 'mace'
+  const isMace = activeTab.startsWith('mace');
+  const skUrl = isMace
     ? (data?.sk_gubernur?.mace || data?.sk_gubernur?.mace_kabkota || data?.sk_gubernur?.mace_provinsi)
     : data?.sk_gubernur?.[activeTab];
-  const isMace = activeTab === 'mace';
 
   return (
     <div className="min-h-screen bg-slate-50">
