@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Search, Edit2, Trash2, Printer, CreditCard, CheckCircle, AlertCircle } from 'lucide-react';
+import { Plus, Search, Edit2, Trash2, Printer, CreditCard, CheckCircle} from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../../context/AuthContext';
 import api from '../../../api/axios';
@@ -109,7 +109,7 @@ const KelolaSiswa = () => {
                 <th className="px-6 py-4 font-bold">NISN</th>
                 <th className="px-6 py-4 font-bold">NAMA LENGKAP</th>
                 <th className="px-6 py-4 font-bold">KELAS</th>
-                <th className="px-6 py-4 font-bold">BERKAS</th>
+                {/* <th className="px-6 py-4 font-bold">BERKAS</th> */}
                 <th className="px-6 py-4 font-bold">STATUS</th>
                 <th className="px-6 py-4 font-bold text-right">AKSI</th>
               </tr>
@@ -120,7 +120,7 @@ const KelolaSiswa = () => {
                   <td className="px-6 py-4 font-medium text-slate-900">{student.nisn}</td>
                   <td className="px-6 py-4 font-bold text-slate-900">{student.nama}</td>
                   <td className="px-6 py-4 text-slate-500">{student.kelas}</td>
-                  <td className="px-6 py-4">
+                  {/* <td className="px-6 py-4">
                     <div className="flex flex-col gap-1">
                       <div className="flex items-center gap-1.5 text-xs">
                         {student.file_rapor ? (
@@ -137,7 +137,7 @@ const KelolaSiswa = () => {
                         )}
                       </div>
                     </div>
-                  </td>
+                  </td> */}
                   <td className="px-6 py-4">
                     {student.status_approval === 'approved' ? (
                       <span className="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-xs font-bold">Disetujui</span>
