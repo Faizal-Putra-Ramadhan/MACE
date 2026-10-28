@@ -109,7 +109,6 @@ const KelolaSiswa = () => {
                 <th className="px-6 py-4 font-bold">NISN</th>
                 <th className="px-6 py-4 font-bold">NAMA LENGKAP</th>
                 <th className="px-6 py-4 font-bold">KELAS</th>
-                {/* <th className="px-6 py-4 font-bold">BERKAS</th> */}
                 <th className="px-6 py-4 font-bold">STATUS</th>
                 <th className="px-6 py-4 font-bold text-right">AKSI</th>
               </tr>
@@ -120,24 +119,6 @@ const KelolaSiswa = () => {
                   <td className="px-6 py-4 font-medium text-slate-900">{student.nisn}</td>
                   <td className="px-6 py-4 font-bold text-slate-900">{student.nama}</td>
                   <td className="px-6 py-4 text-slate-500">{student.kelas}</td>
-                  {/* <td className="px-6 py-4">
-                    <div className="flex flex-col gap-1">
-                      <div className="flex items-center gap-1.5 text-xs">
-                        {student.file_rapor ? (
-                          <><CheckCircle size={14} className="text-emerald-500" /><span className="text-slate-600">Rapor</span></>
-                        ) : (
-                          <><AlertCircle size={14} className="text-red-400" /><span className="text-red-400">Rapor</span></>
-                        )}
-                      </div>
-                      <div className="flex items-center gap-1.5 text-xs">
-                        {student.file_sktm ? (
-                          <><CheckCircle size={14} className="text-emerald-500" /><span className="text-slate-600">SKTM</span></>
-                        ) : (
-                          <><AlertCircle size={14} className="text-red-400" /><span className="text-red-400">SKTM</span></>
-                        )}
-                      </div>
-                    </div>
-                  </td> */}
                   <td className="px-6 py-4">
                     {student.status_approval === 'approved' ? (
                       <span className="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-xs font-bold">Disetujui</span>
@@ -164,7 +145,7 @@ const KelolaSiswa = () => {
               ))}
               {students.length === 0 && (
                 <tr>
-                  <td colSpan="6" className="px-6 py-12 text-center text-slate-500">
+                  <td colSpan="5" className="px-6 py-12 text-center text-slate-500">
                     Belum ada data siswa yang ditambahkan.
                   </td>
                 </tr>
