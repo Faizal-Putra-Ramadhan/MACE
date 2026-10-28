@@ -25,7 +25,7 @@ const PacePortal = () => {
           const response = await fetch('/api/pace/sekolah');
           const data = await response.json();
           if (response.ok) {
-            const typeMap = { slb: 'SLB', snk: 'SNK', atlit: 'Siswa Atlit Berprestasi' };
+            const typeMap = { slb: 'SLB', snk: 'SNK', atlit: 'Siswa Atlit Berprestasi', kedinasan: 'Kedinasan' };
             const filtered = data.filter(s => s.jenis_sekolah === typeMap[selectedType]);
             setSchools(filtered.map(s => ({
               id: s.id,
@@ -115,7 +115,7 @@ const PacePortal = () => {
             <div className="p-8 md:p-12">
               <div className="text-center mb-8">
                 <div className="inline-block bg-brand-gold/10 text-brand-gold text-sm font-bold px-4 py-1.5 rounded-full mb-3">
-                  {selectedType === 'slb' ? 'SLB' : 'SNK'}
+                  {PACE_TYPES.find(t => t.id === selectedType)?.label}
                 </div>
                 <h2 className="text-2xl font-bold text-slate-900 mb-2">Pilih Sekolah</h2>
                 <p className="text-slate-500">Pilih sekolah Anda untuk login dan mendaftarkan siswa.</p>

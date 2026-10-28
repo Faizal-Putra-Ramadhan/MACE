@@ -13,6 +13,8 @@ import PacePortal from './pages/pace/PacePortal';
 import MacePortal from './pages/mace/MacePortal';
 import DashboardSekolah from './pages/pace/sekolah/Dashboard';
 import KelolaSiswa from './pages/pace/sekolah/KelolaSiswa';
+import DaftarSiswa from './pages/pace/sekolah/DaftarSiswa';
+import EditSiswa from './pages/pace/sekolah/EditSiswa';
 import DataSekolah from './pages/pace/sekolah/DataSekolah';
 import PacePengumuman from './pages/pace/sekolah/Pengumuman';
 import PaceDaftarLolos from './pages/pace/sekolah/DaftarLolos';
@@ -89,6 +91,8 @@ function App() {
             <Route index element={<DashboardSekolah />} />
             <Route path="data-sekolah" element={<DataSekolah />} />
             <Route path="siswa" element={<KelolaSiswa />} />
+            <Route path="siswa/daftar" element={<DaftarSiswa />} />
+            <Route path="siswa/:id/edit" element={<EditSiswa />} />
             <Route path="pengumuman" element={<PacePengumuman />} />
             <Route path="daftar-lolos" element={<PaceDaftarLolos />} />
           </Route>

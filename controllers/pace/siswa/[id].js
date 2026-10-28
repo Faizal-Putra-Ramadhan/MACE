@@ -37,12 +37,15 @@ export default async function handler(req, res) {
         }
 
         if (req.method === 'PUT') {
-            const { nama, nisn, nik, tempat_lahir, tanggal_lahir, kelas, alamat, nama_orang_tua, no_hp_orang_tua, file_rapor, file_sktm, file_prestasi_akademik, file_prestasi_non_akademik, biaya_lain_lain, spp_per_semester, komite_per_semester } = req.body;
-            
+            const { nama, nisn, nik, tempat_lahir, tanggal_lahir, kelas, alamat, nama_orang_tua, no_hp_orang_tua, file_rapor, file_sktm, file_prestasi_akademik, file_prestasi_non_akademik, biaya_lain_lain, spp_per_semester, komite_per_semester, data_pendaftaran } = req.body;
+
+            // Bersihkan string kosong pada field unik agar tidak bertabrakan
+            const clean = (v) => (v === '' ? null : v);
+
             const updateData = {
                 nama: nama?.toUpperCase() || student.nama,
-                nisn: nisn || student.nisn,
-                nik: nik || student.nik,
+                nisn: nisn !== undefined ? clean(nisn) : student.nisn,
+                nik: nik !== undefined ? clean(nik) : student.nik,
                 tempat_lahir: tempat_lahir || student.tempat_lahir,
                 tanggal_lahir: tanggal_lahir || student.tanggal_lahir,
                 kelas: kelas || student.kelas,
@@ -54,6 +57,11 @@ export default async function handler(req, res) {
                 file_prestasi_akademik: file_prestasi_akademik !== undefined ? file_prestasi_akademik : student.file_prestasi_akademik,
                 file_prestasi_non_akademik: file_prestasi_non_akademik !== undefined ? file_prestasi_non_akademik : student.file_prestasi_non_akademik,
             };
+
+            // Simpan formulir lengkap (A-G + lampiran) bila dikirim
+            if (data_pendaftaran !== undefined) {
+                updateData.data_pendaftaran = data_pendaftaran;
+            }
 
             // Update usulan_anggaran if provided
             if (biaya_lain_lain !== undefined || spp_per_semester !== undefined || komite_per_semester !== undefined) {

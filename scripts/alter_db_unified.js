@@ -51,7 +51,7 @@ async function updateSchema() {
     console.log('PaceSiswa table updated (nominal_pendanaan, file_prestasi_akademik, file_prestasi_non_akademik, usulan_anggaran).');
 
     // Seed default pengaturan_akses for all scopes if not exist
-    const scopes = ['mace_kabkota', 'mace_provinsi', 'pace_slb', 'pace_snk', 'pace_atlit'];
+    const scopes = ['mace_kabkota', 'mace_provinsi', 'pace_slb', 'pace_snk', 'pace_atlit', 'pace_kedinasan'];
     for (const scope of scopes) {
       await sequelize.query(`
         INSERT INTO pengaturan_akses (scope, edit_surat_permohonan, edit_data_sekolah, edit_siswa, created_at, updated_at)

@@ -23,7 +23,7 @@ const PaceSekolah = sequelize.define('pace_sekolah', {
         allowNull: false
     },
     jenis_sekolah: {
-        type: DataTypes.ENUM('SLB', 'SNK', 'Siswa Atlit Berprestasi'),
+        type: DataTypes.ENUM('SLB', 'SNK', 'Siswa Atlit Berprestasi', 'Kedinasan'),
         allowNull: false
     },
     npsn: {

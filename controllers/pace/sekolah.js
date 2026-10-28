@@ -7,6 +7,7 @@ import jwt from 'jsonwebtoken';
 const paceTypeToScope = (paceType) => {
     if (paceType === 'SNK') return 'pace_snk';
     if (paceType === 'Siswa Atlit Berprestasi') return 'pace_atlit';
+    if (paceType === 'Kedinasan') return 'pace_kedinasan';
     return 'pace_slb';
 };
 
@@ -34,7 +35,7 @@ export default async function handler(req, res) {
                 const schools = await PaceSekolah.findAll({
                     where,
                     include: [
-                        { model: PaceSiswa, attributes: ['id', 'nama', 'nisn', 'kelas', 'status_approval', 'file_rapor', 'file_sktm', 'file_prestasi_akademik', 'file_prestasi_non_akademik', 'usulan_anggaran', 'nominal_pendanaan'] },
+                        { model: PaceSiswa, attributes: ['id', 'nama', 'nisn', 'nik', 'kelas', 'tempat_lahir', 'tanggal_lahir', 'alamat', 'nama_orang_tua', 'no_hp_orang_tua', 'status_approval', 'file_rapor', 'file_sktm', 'file_prestasi_akademik', 'file_prestasi_non_akademik', 'usulan_anggaran', 'nominal_pendanaan', 'data_pendaftaran'] },
                         { model: User, attributes: ['id', 'email', 'nama_display'] }
                     ],
                     order: [['jenis_sekolah', 'ASC'], ['nama_sekolah', 'ASC']]

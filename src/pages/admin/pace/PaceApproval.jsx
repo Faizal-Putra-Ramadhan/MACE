@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Search, FileText, Check, X, Eye, ChevronDown, ChevronUp, Building2, School, Loader2, XCircle, ExternalLink } from 'lucide-react';
 import api from '../../../api/axios';
+import PaceRegistrationDetail from '../../../components/pace/PaceRegistrationDetail';
 
 const PACE_TYPES = [
   { id: 'SLB', label: 'SLB' },
   { id: 'SNK', label: 'SNK' },
   { id: 'Siswa Atlit Berprestasi', label: 'Atlit Berprestasi' },
+  { id: 'Kedinasan', label: 'Persiapan Kedinasan' },
 ];
 
 const AdminPaceApproval = () => {
@@ -337,36 +339,40 @@ const AdminPaceApproval = () => {
                 )}
               </div>
 
-              {/* Uploaded Files */}
-              <div>
-                <h4 className="text-sm font-bold text-brand-gold uppercase tracking-wider mb-4">Berkas yang Diupload</h4>
-                {(() => {
-                  const files = FILE_FIELDS.filter(f => selectedSiswa[f.key]);
-                  if (files.length === 0) return <p className="text-sm text-slate-400 italic">Belum ada berkas yang diupload.</p>;
-                  return (
-                    <div className="grid md:grid-cols-2 gap-3">
-                      {files.map(({ key, label }) => (
-                        <div key={key} className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl border border-slate-100">
-                          <div className="w-10 h-10 bg-brand-gold/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                            <FileText size={18} className="text-brand-gold" />
+              {/* Isi formulir pendaftaran lengkap (data_pendaftaran) atau fallback berkas lama */}
+              {selectedSiswa.data_pendaftaran ? (
+                <PaceRegistrationDetail data={selectedSiswa.data_pendaftaran} />
+              ) : (
+                <div>
+                  <h4 className="text-sm font-bold text-brand-gold uppercase tracking-wider mb-4">Berkas yang Diupload</h4>
+                  {(() => {
+                    const files = FILE_FIELDS.filter(f => selectedSiswa[f.key]);
+                    if (files.length === 0) return <p className="text-sm text-slate-400 italic">Belum ada berkas yang diupload.</p>;
+                    return (
+                      <div className="grid md:grid-cols-2 gap-3">
+                        {files.map(({ key, label }) => (
+                          <div key={key} className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl border border-slate-100">
+                            <div className="w-10 h-10 bg-brand-gold/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                              <FileText size={18} className="text-brand-gold" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-xs font-bold text-slate-700 truncate">{label}</p>
+                              {isValidUrl(selectedSiswa[key]) ? (
+                                <a href={selectedSiswa[key]} target="_blank" rel="noopener noreferrer"
+                                  className="text-xs text-brand-blue hover:underline flex items-center gap-1 mt-0.5">
+                                  <ExternalLink size={12} /> Lihat File
+                                </a>
+                              ) : (
+                                <p className="text-xs text-red-400 italic">File tidak valid</p>
+                              )}
+                            </div>
                           </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-xs font-bold text-slate-700 truncate">{label}</p>
-                            {isValidUrl(selectedSiswa[key]) ? (
-                              <a href={selectedSiswa[key]} target="_blank" rel="noopener noreferrer"
-                                className="text-xs text-brand-blue hover:underline flex items-center gap-1 mt-0.5">
-                                <ExternalLink size={12} /> Lihat File
-                              </a>
-                            ) : (
-                              <p className="text-xs text-red-400 italic">File tidak valid</p>
-                            )}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  );
-                })()}
-              </div>
+                        ))}
+                      </div>
+                    );
+                  })()}
+                </div>
+              )}
             </div>
           </div>
         </div>

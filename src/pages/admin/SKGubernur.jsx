@@ -9,6 +9,7 @@ const KATEGORI_LIST = [
   { id: 'pace_slb', label: 'PACE SLB', color: 'gold' },
   { id: 'pace_snk', label: 'PACE SNK', color: 'gold' },
   { id: 'pace_atlit', label: 'PACE Atlit Berprestasi', color: 'gold' },
+  { id: 'pace_kedinasan', label: 'PACE Kedinasan', color: 'gold' },
 ];
 
 const AdminSKGubernur = () => {

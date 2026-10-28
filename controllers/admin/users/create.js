@@ -28,7 +28,7 @@ async function handler(req, res) {
 
         // Determine the actual role to store
         let actualRole = role;
-        if (['pace_slb', 'pace_snk', 'pace_atlit'].includes(role)) {
+        if (['pace_slb', 'pace_snk', 'pace_atlit', 'pace_kedinasan'].includes(role)) {
             actualRole = 'sekolah_pace';
         }
 

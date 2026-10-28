@@ -55,6 +55,7 @@ async function handler(req, res) {
         const paceSLB = [];
         const paceSNK = [];
         const paceAtlit = [];
+        const paceKedinasan = [];
 
         paceList.forEach(s => {
             const entry = {
@@ -71,6 +72,9 @@ async function handler(req, res) {
             } else if (jenis === 'SNK') {
                 entry.no = paceSNK.length + 1;
                 paceSNK.push(entry);
+            } else if (jenis === 'Kedinasan') {
+                entry.no = paceKedinasan.length + 1;
+                paceKedinasan.push(entry);
             } else {
                 entry.no = paceAtlit.length + 1;
                 paceAtlit.push(entry);
@@ -93,6 +97,7 @@ async function handler(req, res) {
             pace_slb: paceSLB,
             pace_snk: paceSNK,
             pace_atlit: paceAtlit,
+            pace_kedinasan: paceKedinasan,
             sk_gubernur: skFiles,
         });
     } catch (error) {

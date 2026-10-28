@@ -27,7 +27,7 @@ const User = sequelize.define('users', {
         defaultValue: false
     },
     pace_type: {
-        type: DataTypes.ENUM('SLB', 'SNK', 'Siswa Atlit Berprestasi'),
+        type: DataTypes.ENUM('SLB', 'SNK', 'Siswa Atlit Berprestasi', 'Kedinasan'),
         allowNull: true
     },
     mace_type: {

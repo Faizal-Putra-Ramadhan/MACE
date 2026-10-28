@@ -18,6 +18,7 @@ const CATEGORIES = [
   { id: 'pace_slb', label: 'PACE SLB', desc: 'Pelajar Cerdas - Sekolah Luar Biasa', icon: School, color: 'gold' },
   { id: 'pace_snk', label: 'PACE SNK', desc: 'Pelajar Cerdas - Sekolah Kekhususan', icon: School, color: 'gold' },
   { id: 'pace_atlit', label: 'PACE Atlit Berprestasi', desc: 'Pelajar Cerdas - Siswa Atlit Berprestasi', icon: Award, color: 'gold' },
+  { id: 'pace_kedinasan', label: 'PACE Kedinasan', desc: 'Pelajar Cerdas - Persiapan Sekolah Kedinasan', icon: School, color: 'gold' },
 ];
 
 const PengumumanPenerima = () => {

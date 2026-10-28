@@ -33,37 +33,37 @@ const PaceSiswa = sequelize.define('pace_siswa', {
     },
     nisn: { // The user requested 'nis' in the prompt but the card has 'NISN', I will use nisn for consistency.
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
         unique: true
     },
     nik: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
         unique: true
     },
     tempat_lahir: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     },
     tanggal_lahir: {
         type: DataTypes.DATEONLY,
-        allowNull: false
+        allowNull: true
     },
     kelas: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     },
     alamat: {
         type: DataTypes.TEXT,
-        allowNull: false
+        allowNull: true
     },
     nama_orang_tua: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     },
     no_hp_orang_tua: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     },
     foto_profil: {
         type: DataTypes.STRING,
@@ -95,6 +95,12 @@ const PaceSiswa = sequelize.define('pace_siswa', {
     },
     nominal_pendanaan: {
         type: DataTypes.INTEGER,
+        allowNull: true
+    },
+    // Menyimpan SELURUH isi formulir pendaftaran PACE (bagian A-G + lampiran)
+    // sebagai JSON fleksibel tanpa perlu migrasi DB untuk field baru.
+    data_pendaftaran: {
+        type: DataTypes.JSON,
         allowNull: true
     }
 }, {

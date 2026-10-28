@@ -6,6 +6,7 @@ import jwt from 'jsonwebtoken';
 const paceTypeToScope = (paceType) => {
     if (paceType === 'SNK') return 'pace_snk';
     if (paceType === 'Siswa Atlit Berprestasi') return 'pace_atlit';
+    if (paceType === 'Kedinasan') return 'pace_kedinasan';
     return 'pace_slb';
 };
 
@@ -78,12 +79,13 @@ export default async function handler(req, res) {
                 nama, nisn, nik, tempat_lahir, tanggal_lahir, kelas, alamat,
                 nama_orang_tua, no_hp_orang_tua,
                 file_rapor, file_sktm, file_prestasi_akademik, file_prestasi_non_akademik,
-                biaya_lain_lain, spp_per_semester, komite_per_semester
+                biaya_lain_lain, spp_per_semester, komite_per_semester,
+                data_pendaftaran
             } = req.body;
 
-            // Validate required fields
-            if (!nama || !nisn || !nik || !tempat_lahir || !tanggal_lahir || !kelas || !alamat || !nama_orang_tua || !no_hp_orang_tua) {
-                return res.status(400).json({ message: 'Semua field wajib harus diisi' });
+            // Validate required fields (hanya nama yang wajib; sisanya opsional sesuai formulir)
+            if (!nama) {
+                return res.status(400).json({ message: 'Nama lengkap peserta didik wajib diisi' });
             }
 
             const usulan_anggaran = {};
@@ -91,22 +93,26 @@ export default async function handler(req, res) {
             if (spp_per_semester !== undefined) usulan_anggaran.spp_per_semester = spp_per_semester;
             if (komite_per_semester !== undefined) usulan_anggaran.komite_per_semester = komite_per_semester;
 
+            // Kosongkan string kosong pada field unik agar tidak bertabrakan
+            const clean = (v) => (v === undefined || v === null || v === '' ? null : v);
+
             const student = await PaceSiswa.create({
                 sekolah_id: school.id,
                 nama: nama.toUpperCase(),
-                nisn,
-                nik,
-                tempat_lahir,
-                tanggal_lahir,
-                kelas,
-                alamat,
-                nama_orang_tua,
-                no_hp_orang_tua,
+                nisn: clean(nisn),
+                nik: clean(nik),
+                tempat_lahir: clean(tempat_lahir),
+                tanggal_lahir: clean(tanggal_lahir),
+                kelas: clean(kelas),
+                alamat: clean(alamat),
+                nama_orang_tua: clean(nama_orang_tua),
+                no_hp_orang_tua: clean(no_hp_orang_tua),
                 file_rapor: file_rapor || null,
                 file_sktm: file_sktm || null,
                 file_prestasi_akademik: file_prestasi_akademik || file_rapor || null,
                 file_prestasi_non_akademik: file_prestasi_non_akademik || null,
                 usulan_anggaran: Object.keys(usulan_anggaran).length > 0 ? usulan_anggaran : null,
+                data_pendaftaran: data_pendaftaran || null,
                 status_approval: 'pending'
             });
 

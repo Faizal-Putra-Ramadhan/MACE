@@ -20,6 +20,7 @@ const ROLE_OPTIONS = [
   { id: 'pace_slb', label: 'PACE SLB', desc: 'Sekolah Luar Biasa untuk program PACE', pace_type: 'SLB', role: 'pace_slb' },
   { id: 'pace_snk', label: 'PACE SNK', desc: 'Sekolah Kekhususan untuk program PACE', pace_type: 'SNK', role: 'pace_snk' },
   { id: 'pace_atlit', label: 'PACE Atlit Berprestasi', desc: 'Siswa Atlit Berprestasi untuk program PACE', pace_type: 'Siswa Atlit Berprestasi', role: 'pace_atlit' },
+  { id: 'pace_kedinasan', label: 'PACE Kedinasan', desc: 'Program Persiapan Sekolah Kedinasan untuk program PACE', pace_type: 'Kedinasan', role: 'pace_kedinasan' },
 ];
 
 const CreateAccount = () => {
